@@ -1,0 +1,338 @@
+@import url("chat.css");
+
+/* Opera sidebar mode: the complete Tamper Ai workspace, reshaped for a narrow panel. */
+html, body { min-width: 0; overflow: hidden; }
+body.sidebarMode { background: var(--bg); }
+body.sidebarMode .appShell {
+  grid-template-columns: 50px minmax(0, 1fr) !important;
+  width: 100%;
+  min-width: 0;
+  height: 100vh;
+  min-height: 0;
+}
+body.sidebarMode .leftRail {
+  min-height: 0;
+  width: 50px;
+  padding: 10px 5px;
+  align-items: center;
+  overflow: hidden;
+}
+body.sidebarMode .logo {
+  width: 38px;
+  min-height: 38px;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #0b1c17;
+}
+body.sidebarMode .logo span { font-size: 18px; margin: 0; }
+body.sidebarMode .logo b,
+body.sidebarMode .logo small,
+body.sidebarMode .newChat kbd,
+body.sidebarMode .railSection,
+body.sidebarMode .railFoot { display: none; }
+body.sidebarMode .newChat {
+  width: 38px;
+  height: 38px;
+  margin: 12px 0 7px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 0;
+}
+body.sidebarMode .newChat::before { content: "+"; font-size: 22px; line-height: 1; }
+body.sidebarMode .nav { width: 100%; margin: 3px 0; gap: 5px; }
+body.sidebarMode .navButton {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 12px;
+  font-size: 0;
+}
+body.sidebarMode .navButton span { width: auto; margin: 0; font-size: 17px; }
+body.sidebarMode .mainPane { width: 100%; min-width: 0; }
+body.sidebarMode .topbar {
+  min-height: 62px;
+  gap: 7px;
+  padding: 9px 10px;
+}
+body.sidebarMode #chatKicker { display: none; }
+body.sidebarMode .topbar h1 {
+  max-width: 88px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+body.sidebarMode .topControls { gap: 2px; min-width: 0; }
+body.sidebarMode .modelControl { min-width: 0; padding-left: 5px; border-radius: 9px; }
+body.sidebarMode .modelControl .statusDot { width: 6px; height: 6px; margin-right: 3px; }
+body.sidebarMode .modelControl select { max-width: 90px; min-width: 52px; padding: 6px 0; font-size: 11px; }
+body.sidebarMode .modelControl button,
+body.sidebarMode .iconButton { padding: 6px 6px; font-size: 15px; }
+body.sidebarMode .workPanel#panel-chat { padding: 0 9px 9px; }
+body.sidebarMode .messageArea { padding: 15px 0 8px; gap: 9px; }
+body.sidebarMode .welcome { padding: 15px; border-radius: 16px; }
+body.sidebarMode .welcome h2 { font-size: 20px; }
+body.sidebarMode .welcome p { font-size: 12px; }
+body.sidebarMode .message { max-width: 95%; padding: 9px 10px; border-radius: 12px; font-size: 13px; }
+body.sidebarMode .reasoningPanel { width: 95%; }
+body.sidebarMode .contextStrip { margin: 4px 0 7px; padding: 7px 8px; }
+body.sidebarMode .contextStrip small { max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.sidebarMode .quickActions { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; margin: 3px 0 6px; }
+body.sidebarMode .quickActions button { flex: 0 0 auto; font-size: 11px; padding: 6px 8px; }
+body.sidebarMode .composer { border-radius: 14px; padding: 7px 7px 7px 10px; }
+body.sidebarMode .composerMeta { padding-top: 5px; }
+body.sidebarMode .composerMeta > span:last-child { display: none; }
+body.sidebarMode .libraryPanel { padding: 18px 12px; }
+body.sidebarMode .libraryHeader { align-items: flex-start; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+body.sidebarMode .libraryHeader h2 { font-size: 21px; }
+body.sidebarMode .cardGrid { grid-template-columns: 1fr; }
+body.sidebarMode .notesArea { min-height: 220px; }
+body.sidebarMode .dialog { width: calc(100vw - 24px); max-height: calc(100vh - 24px); overflow: auto; }
+body.sidebarMode .twoCol { grid-template-columns: 1fr; gap: 0; }
+
+/* Browser context opens as an in-panel drawer, rather than requiring a third column. */
+body.sidebarMode .inspector {
+  display: block !important;
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50px;
+  width: auto;
+  padding: 13px;
+  border-left: 1px solid var(--line2);
+  box-shadow: -18px 0 45px rgba(0,0,0,.35);
+  transform: translateX(0);
+  transition: transform .18s ease;
+}
+body.sidebarMode.inspectorCollapsed .appShell { grid-template-columns: 50px minmax(0, 1fr) !important; }
+body.sidebarMode.inspectorCollapsed .inspector {
+  display: block !important;
+  pointer-events: none;
+  transform: translateX(104%);
+}
+body.sidebarMode .tabList { max-height: min(42vh, 310px); }
+body.sidebarMode .tabsCard { margin-top: 13px; padding-top: 12px; }
+body.sidebarMode .toolCard { padding: 9px; }
+
+/* “Pop out” matters only from the narrow sidebar; full chat keeps the control invisible. */
+body:not(.sidebarMode) #openWorkspace { display: none; }
+
+@media (max-width: 330px) {
+  body.sidebarMode .appShell { grid-template-columns: 44px minmax(0, 1fr) !important; }
+  body.sidebarMode .leftRail { width: 44px; padding-left: 3px; padding-right: 3px; }
+  body.sidebarMode .logo,
+  body.sidebarMode .newChat,
+  body.sidebarMode .navButton { width: 34px; height: 34px; border-radius: 10px; }
+  body.sidebarMode .inspector { left: 44px; }
+  body.sidebarMode .topbar h1 { display: none; }
+  body.sidebarMode .modelControl select { max-width: 72px; }
+}
+
+/* v1.1.1 sidebar repair
+   Do not reuse the desktop three-column grid in Opera's fixed-width sidebar.
+   This block intentionally uses !important because chat.css is shared with the
+   full workspace and Opera can keep stylesheets cached across extension reloads. */
+html, body,
+body.sidebarMode {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.sidebarMode .appShell {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  grid-template-columns: none !important;
+}
+
+/* The old desktop rail is still present for shared JavaScript state, but the
+   sidebar uses the compact navigation strip below the header instead. */
+body.sidebarMode .leftRail {
+  display: none !important;
+}
+
+body.sidebarMode .mainPane {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.sidebarMode .topbar {
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  padding: 10px 11px !important;
+  gap: 8px !important;
+}
+body.sidebarMode .topbar > div:first-child { min-width: 0 !important; }
+body.sidebarMode .topbar h1 {
+  display: block !important;
+  max-width: 118px !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
+}
+body.sidebarMode .topControls { min-width: 0 !important; gap: 1px !important; }
+body.sidebarMode .modelControl { min-width: 0 !important; max-width: 116px !important; }
+body.sidebarMode .modelControl select {
+  min-width: 0 !important;
+  width: 74px !important;
+  max-width: 74px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+body.sidebarMode .modelControl button,
+body.sidebarMode .iconButton { flex: 0 0 auto !important; }
+
+/* New sidebar-native nav. It is horizontally scrollable rather than squeezing
+   a desktop rail into a narrow panel. */
+body.sidebarMode .compactNav {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 5px !important;
+  padding: 7px 10px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  border-bottom: 1px solid var(--line) !important;
+  background: rgba(7,16,14,.72) !important;
+  scrollbar-width: none !important;
+}
+body.sidebarMode .compactNav::-webkit-scrollbar { display: none !important; }
+body.sidebarMode .compactNav .navButton,
+body.sidebarMode .compactNav .compactAction {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  height: 31px !important;
+  margin: 0 !important;
+  padding: 0 9px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 9px !important;
+  background: #0b1d18 !important;
+  color: #b9d5cc !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+body.sidebarMode .compactNav .navButton span,
+body.sidebarMode .compactNav .compactAction span {
+  display: inline !important;
+  width: auto !important;
+  margin-left: 4px !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+body.sidebarMode .compactNav .navButton.active,
+body.sidebarMode .compactNav .navButton:hover,
+body.sidebarMode .compactNav .compactAction:hover {
+  background: #123328 !important;
+  color: var(--mint) !important;
+  border-color: var(--line2) !important;
+}
+
+body.sidebarMode .workPanel {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+body.sidebarMode .workPanel#panel-chat {
+  display: none !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 11px 11px !important;
+  overflow: hidden !important;
+}
+body.sidebarMode .workPanel#panel-chat.active { display: flex !important; }
+body.sidebarMode .messageArea {
+  min-width: 0 !important;
+  width: 100% !important;
+  padding: 16px 0 9px !important;
+  overflow-x: hidden !important;
+}
+body.sidebarMode .message,
+body.sidebarMode .reasoningPanel,
+body.sidebarMode .welcome { max-width: 100% !important; }
+body.sidebarMode .welcome { padding: 15px !important; }
+body.sidebarMode .quickActions { width: 100% !important; }
+body.sidebarMode .composer { width: 100% !important; min-width: 0 !important; }
+body.sidebarMode .composer textarea { min-width: 0 !important; }
+
+body.sidebarMode .libraryPanel {
+  display: none !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 16px 12px !important;
+}
+body.sidebarMode .libraryPanel.active { display: flex !important; }
+
+/* The context panel is an overlay, never a third grid column. */
+body.sidebarMode .inspector {
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 50 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 13px !important;
+  overflow: auto !important;
+  transform: translateX(0) !important;
+  transition: transform .18s ease !important;
+}
+body.sidebarMode.inspectorCollapsed .inspector {
+  display: block !important;
+  pointer-events: none !important;
+  transform: translateX(102%) !important;
+}
+
+@media (max-width: 390px) {
+  body.sidebarMode .topbar h1 { max-width: 72px !important; }
+  body.sidebarMode .modelControl { max-width: 97px !important; }
+  body.sidebarMode .modelControl select { width: 56px !important; max-width: 56px !important; }
+  body.sidebarMode #openWorkspace { display: none !important; }
+  body.sidebarMode .compactNav .navButton,
+  body.sidebarMode .compactNav .compactAction { padding: 0 7px !important; }
+}
+
+/* v1.2.1 sidebar sizing for the additive feature layer. */
+body.sidebarMode #openWorkspace{display:none!important}
+body.sidebarMode .topbar h1{max-width:72px!important}
+body.sidebarMode .topControls{overflow-x:auto;scrollbar-width:none}body.sidebarMode .topControls::-webkit-scrollbar{display:none}
+body.sidebarMode .composerActions{gap:4px}body.sidebarMode .composerActions button{width:30px!important;height:30px!important;padding:2px!important;font-size:15px!important}
+body.sidebarMode .attachmentTray{padding-top:4px}body.sidebarMode .attachmentChip{max-width:150px}.sidebarMode .attachmentChip img{width:24px;height:24px}
+body.sidebarMode .messageGroup{max-width:100%}.sidebarMode .messageActions{flex-wrap:wrap}.sidebarMode .messageAction{font-size:10px}
+body.sidebarMode .themeGrid{grid-template-columns:1fr}.sidebarMode .commandList{max-height:45vh}
+
+/* v1.4.0 — passive page screen sidebar layout */
+body.sidebarMode .screenPanel{padding:14px 11px!important;overflow:auto!important}.sidebarMode .screenLibraryHeader{gap:10px!important}.sidebarMode .screenHeaderButtons{width:100%}.sidebarMode .screenHeaderButtons button{flex:1}.sidebarMode .screenSummary{grid-template-columns:repeat(2,minmax(80px,1fr))}.sidebarMode .screenActions>*{width:100%}.sidebarMode .screenDetailBody{padding:9px}.sidebarMode .screenTable{min-width:440px}.sidebarMode .screenPill{font-size:9px}.sidebarMode .screenSafety{font-size:11px}
+
+/* v1.4.3 — page reader + searchable scan data */
+.screenSearchBar{display:flex;gap:7px;align-items:center;margin:10px 0 8px}.screenSearchBar input{min-width:0;flex:1;border:1px solid var(--line);border-radius:9px;background:#0a1915;color:var(--ink);padding:8px;outline:0}.screenSearchBar input:focus{border-color:rgba(116,246,212,.58);box-shadow:0 0 0 3px rgba(116,246,212,.07)}.screenSearchBar button{white-space:nowrap}.screenSearchBar button:disabled{opacity:.45;cursor:not-allowed}.screenSearchResults{display:grid;gap:7px;border:1px solid var(--line);border-radius:11px;background:rgba(10,25,21,.75);padding:9px;margin:0 0 11px}.screenSearchTitle{font-size:11px;color:var(--mint)}.screenSearchHit{display:grid;gap:3px;border-left:2px solid rgba(116,246,212,.42);padding:6px 7px;background:rgba(18,57,47,.26);border-radius:0 8px 8px 0}.screenSearchHit code{white-space:pre-wrap;overflow-wrap:anywhere;color:#dcfff6;font:10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}.screenSearchContext{color:var(--muted);font-size:10px;overflow-wrap:anywhere}.screenSearchResults .screenHint{margin:0}

@@ -1,0 +1,66 @@
+{
+  "manifest_version": 3,
+  "name": "Tamper Ai",
+  "description": "A private Opera-style local Qwen assistant with reader context and searchable manual page-scan data.",
+  "version": "1.4.3",
+  "minimum_chrome_version": "102",
+  "action": {
+    "default_title": "Tamper Ai",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage",
+    "contextMenus",
+    "cookies",
+    "webRequest"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:1234/*",
+    "http://localhost:1234/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "commands": {
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Open Tamper Ai in the Opera sidebar"
+    },
+    "open-tamper-ai-workspace": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      },
+      "description": "Open Tamper Ai full workspace"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "sidebar_action": {
+    "default_icon": {
+      "19": "icons/icon19.png",
+      "38": "icons/icon38.png"
+    },
+    "default_title": "Tamper Ai",
+    "default_panel": "sidebar.html"
+  }
+}
